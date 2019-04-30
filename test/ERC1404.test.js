@@ -24,7 +24,7 @@ contract('ERC1404', ([sender, recipient, ...accounts]) => {
   const CHECK_EHOLDING_PERIOD = 5
   const EHOLDING_PERIOD_MESSAGE = 'Sender is still in 12 months holding period'
   const CHECK_EDECIMALS = 6
-  const EDECIMALS_MESSAGE = 'Transfer value must be bigger than 0.000001 or 1 szabo'
+  const EDECIMALS_MESSAGE = 'Transfer value must be bigger than MINIMAL_TRANSFER'
   
   const PERM_SEND = 0x1
   const PERM_RECEIVE = 0x2
@@ -184,11 +184,14 @@ contract('ERC1404', ([sender, recipient, ...accounts]) => {
     // TODO: find a way to reverse time increase
   })
 
-  it('should disallow transfers of token lower than 6 decimal points', async () => {
-    let minimalTransfer = web3.utils.toWei('0.000001', 'ether')
-    let failValue = web3.utils.toWei('0.000000999999999999', 'ether')
+  it('should disallow transfers of token lower than MINIMAL_TRANSFER', async () => {
+    
+    let minimalTransfer = await service.MINIMAL_TRANSFER()
+    // console.log(minimalTransfer.toString(), await service.MINIMAL_TRANSFER())
+    let failValue = minimalTransfer - 1
+    console.log("Checking with failValue %i", failValue)
 
-    assert.equal(minimalTransfer, await service.MINIMAL_TRANSFER(), "Minimal transfer incorrect")
+    // assert.equal(minimalTransfer.toString(), await service.MINIMAL_TRANSFER(), "Minimal transfer incorrect")
 
     let tx = await token.transfer(recipient, failValue, { from: sender })
     assert.equal(tx.logs[0].args.reason, CHECK_EDECIMALS, "Reason should be CHECK_EDECIMALS")
