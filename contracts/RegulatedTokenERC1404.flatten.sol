@@ -1,4 +1,5 @@
 
+// File: zeppelin-solidity/contracts/token/ERC20/ERC20Basic.sol
 
 pragma solidity ^0.4.24;
 
@@ -15,6 +16,7 @@ contract ERC20Basic {
   event Transfer(address indexed from, address indexed to, uint256 value);
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/ERC20.sol
 
 pragma solidity ^0.4.24;
 
@@ -39,6 +41,7 @@ contract ERC20 is ERC20Basic {
   );
 }
 
+// File: contracts/ERC1404.sol
 
 pragma solidity ^0.4.24;
 
@@ -59,6 +62,7 @@ contract ERC1404 is ERC20 {
     function messageForTransferRestriction (uint8 restrictionCode) public view returns (string);
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/DetailedERC20.sol
 
 pragma solidity ^0.4.24;
 
@@ -82,6 +86,7 @@ contract DetailedERC20 is ERC20 {
   }
 }
 
+// File: zeppelin-solidity/contracts/math/SafeMath.sol
 
 pragma solidity ^0.4.24;
 
@@ -136,6 +141,7 @@ library SafeMath {
   }
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/BasicToken.sol
 
 pragma solidity ^0.4.24;
 
@@ -186,6 +192,7 @@ contract BasicToken is ERC20Basic {
 
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/StandardToken.sol
 
 pragma solidity ^0.4.24;
 
@@ -311,6 +318,7 @@ contract StandardToken is ERC20, BasicToken {
 
 }
 
+// File: zeppelin-solidity/contracts/ownership/Ownable.sol
 
 pragma solidity ^0.4.24;
 
@@ -377,6 +385,7 @@ contract Ownable {
   }
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/MintableToken.sol
 
 pragma solidity ^0.4.24;
 
@@ -438,6 +447,7 @@ contract MintableToken is StandardToken, Ownable {
   }
 }
 
+// File: zeppelin-solidity/contracts/token/ERC20/BurnableToken.sol
 
 pragma solidity ^0.4.24;
 
@@ -471,6 +481,7 @@ contract BurnableToken is BasicToken {
   }
 }
 
+// File: contracts/ServiceRegistry.sol
 
 /**
    Copyright (c) 2017 Harbor Platform, Inc.
@@ -537,6 +548,7 @@ contract ServiceRegistry is Ownable {
   }
 }
 
+// File: contracts/RegulatorServiceI.sol
 
 /**
    Copyright (c) 2017 Harbor Platform, Inc.
@@ -578,6 +590,7 @@ contract RegulatorServiceI {
   function check(address _token, address _spender, address _from, address _to, uint256 _amount) public returns (uint8);
 }
 
+// File: contracts/RegulatorService.sol
 
 pragma solidity ^0.4.18;
 
@@ -649,9 +662,9 @@ contract RegulatorService is RegulatorServiceI, Ownable {
   string constant private EHOLDING_PERIOD_MESSAGE = 'Sender is still in 12 months holding period';
 
   uint8 constant private CHECK_EDECIMALS = 6;
-  string constant private EDECIMALS_MESSAGE = 'Transfer value must be bigger than 0.000001 or 1 szabo';
+  string constant private EDECIMALS_MESSAGE = 'Transfer value must be bigger than MINIMAL_TRANSFER';
 
-  uint256 constant public MINIMAL_TRANSFER = 1 szabo;
+  uint256 constant public MINIMAL_TRANSFER = 1 wei;
 
   /// @dev Permission bits for allowing a participant to send tokens
   uint8 constant private PERM_SEND = 0x1;
@@ -849,6 +862,7 @@ contract RegulatorService is RegulatorServiceI, Ownable {
   }
 }
 
+// File: contracts/RegulatedToken.sol
 
 /**
    Copyright (c) 2017 Harbor Platform, Inc.
@@ -974,6 +988,7 @@ contract RegulatedToken is DetailedERC20, MintableToken, BurnableToken {
   }
 }
 
+// File: contracts/RegulatedTokenERC1404.sol
 
 pragma solidity ^0.4.24;
 
