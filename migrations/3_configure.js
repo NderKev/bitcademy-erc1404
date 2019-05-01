@@ -5,19 +5,21 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const fs = require('fs');
 const mnemonic = fs.readFileSync("../.secret").toString().trim();
 const provider = new HDWalletProvider(mnemonic, 'https://rinkeby.infura.io');
+const providerMainnet = new HDWalletProvider(mnemonic, 'https://mainnet.infura.io');
 
 module.exports = async function(deployer, network, accounts) {
   let from, newOwner;
+  console.log("Network %s", network)
   if(network == 'local' || network == 'development') {
     from = accounts[0]
     newOwner = accounts[1]
   } else if (network == 'rinkeby') {
     newOwner = "0xa8836881DCACE8bF1DaAC141A3dAbD9A4884dBFB"
-  } else {
     from = provider.addresses[0]
+  } else if (network == 'mainnet' || network == 'mainnet-fork') {
     // client wallet
     newOwner = "0x3ce202c7E3b3a546f770b146A4652AF83eB318b9"
-
+    from = providerMainnet.addresses[0]
   }
 
   let rtoken = await RegulatedTokenERC1404.deployed();
